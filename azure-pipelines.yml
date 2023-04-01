@@ -58,6 +58,7 @@ stages:
       - publish: '$(Build.ArtifactStagingDirectory)'
         artifact: warFiles
   - stage: Uploadartifact
+    dependsOn: createArtifact
     displayName: 'Upload to azure artifacts'
     jobs:
     - job: Downloadartifact

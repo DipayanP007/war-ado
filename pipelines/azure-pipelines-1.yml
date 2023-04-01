@@ -27,3 +27,4 @@ stages:
           find .
           find '$(System.ArtifactsDirectory)'
           ls '$(System.ArtifactsDirectory)/'
+    - template: pipelines/azure-template.yml

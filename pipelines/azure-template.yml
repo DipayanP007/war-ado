@@ -1,0 +1,6 @@
+steps:
+- script: |
+      echo "second"
+      find .
+      find '$(System.ArtifactsDirectory)'
+      ls '$(System.ArtifactsDirectory)/'

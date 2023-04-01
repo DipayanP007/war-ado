@@ -55,35 +55,43 @@ stages:
       displayName: 'Archive package to be used by next stage'
       dependsOn: mavenpackage
       steps:
-      - publish: '$(Build.ArtifactStagingDirectory)'
-        artifact: warFiles
+      # - publish: '$(Build.ArtifactStagingDirectory)'
+      #   artifact: warFiles
       # - task: PublishPipelineArtifact@1
       #   inputs:
       #     targetPath: '$(Build.ArtifactStagingDirectory)'
       #     artifact: 'wars'
       #     publishLocation: 'pipeline'
-      # - task: PublishBuildArtifacts@1
-      #   inputs:
-      #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      #     ArtifactName: 'drop'
-      #     publishLocation: 'Container'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
   - stage: Uploadartifact
     dependsOn: createArtifact
     displayName: 'Upload to azure artifacts'
     jobs:
     - job: Downloadartifact
       steps:
-        - download: current
-          artifact: warFiles
-          patterns: '**/*.war'
+        # - download: current
+        #   artifact: warFiles
+        #   patterns: '**/*.war'
         # - task: DownloadPipelineArtifact@2
         #   inputs:
         #     buildType: 'current'
         #     artifactName: 'wars'
         #     itemPattern: '**'
         #     targetPath: '$(Pipeline.Workspace)'
+        - task: DownloadBuildArtifacts@1
+          inputs:
+            buildType: 'current'
+            downloadType: 'single'
+            artifactName: 'drop'
+            downloadPath: '$(System.ArtifactsDirectory)'
+            cleanDestinationFolder: true
         - script: |
               set -x
+              find '$(System.ArtifactsDirectory)'
               find '$(Pipeline.Workspace)'
               find .
               

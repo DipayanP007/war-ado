@@ -92,7 +92,7 @@ stages:
             buildType: 'current'
             artifactName: 'wars'
             itemPattern: '**/*.war'
-            targetPath: '$(Pipeline.Workspace)'
+            targetPath: '$(Pipeline.Workspace)/wars'
         # - task: DownloadBuildArtifacts@1
         #   inputs:
         #     buildType: 'current'

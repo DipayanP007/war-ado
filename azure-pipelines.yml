@@ -41,11 +41,26 @@ stages:
       #     publishLocation: 'pipeline'
       # - publish: '$(Build.ArtifactStagingDirectory)/target'
       #   artifact: warFiles
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: 'target'
+          Contents: '**/*.war'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+          CleanTargetFolder: true
+          OverWrite: true
       - script: |
               set -x
               ls '$(Build.ArtifactStagingDirectory)/'
               pwd
               find .
+    - job: check
+      steps:
+      - script: |
+            set -x
+            ls
+            ls '$(Build.ArtifactStagingDirectory)/'
+            pwd
+            find .
   - stage: Uploadartifact
     displayName: 'Upload to azure artifacts'
     jobs:

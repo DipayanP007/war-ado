@@ -39,11 +39,11 @@ stages:
       #     targetPath: '$(Pipeline.Workspace)/target'
       #     artifact: '*.war'
       #     publishLocation: 'pipeline'
-      # - publish: '$(Pipeline.Workspace)/target'
-      #   artifact: warFiles
-      - script: |
-              ls '$(Build.ArtifactStagingDirectory)'
-              pwd
+      - publish: '$(Build.ArtifactStagingDirectory)/target'
+        artifact: warFiles
+      # - script: |
+      #         ls '$(Build.ArtifactStagingDirectory)'
+      #         pwd
   - stage: Uploadartifact
     displayName: 'Upload to azure artifacts'
     jobs:

@@ -51,15 +51,20 @@ stages:
               set -x
               ls '$(Build.ArtifactStagingDirectory)/'
         displayName: "Check if artifact is copied"
+      - publish: '$(Build.ArtifactStagingDirectory)'
+        artifact: warFiles
     - job: uploadpackage
       displayName: 'Archive package to be used by next stage'
       dependsOn: mavenpackage
       steps:
+      - download: current
+        artifact: warFiles
+        patterns: '**/*.war'
       - script: |
             set -x
             find .
-            find '$(Build.ArtifactStagingDirectory)/'
-            ls '$(Build.ArtifactStagingDirectory)/'
+            find '$(Pipeline.Workspace)/'
+            ls '$(Pipeline.Workspace)/warFiles'
             ls
       # - publish: '$(Build.ArtifactStagingDirectory)'
       #   artifact: warFiles

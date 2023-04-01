@@ -7,13 +7,47 @@ trigger:
 - master
 
 pool:
-  vmImage: ubuntu-latest
+  # vmImage: ubuntu-latest
+  name: custom
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+# steps:
+# - script: echo Hello, world!
+#   displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+# - script: |
+#     echo Add other tasks to build, test, and deploy your project.
+#     echo See https://aka.ms/yaml
+#   displayName: 'Run a multi-line script'
+stages:
+  - stage: createArtifact
+    displayName: "Create artifact"
+    jobs:
+    - job: mavenpackage
+      steps:
+      - task: Maven@4
+        inputs:
+          mavenPomFile: 'pom.xml'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+      # - task: PublishPipelineArtifact@1
+      #   inputs:
+      #     targetPath: '$(Pipeline.Workspace)/target'
+      #     artifact: '*.war'
+      #     publishLocation: 'pipeline'
+      - publish: '$(Pipeline.Workspace)/target'
+        artifact: warFiles
+  - stage: Uploadartifact
+    displayName: 'Upload to azure artifacts'
+    jobs:
+    - job: Downloadartifact
+      steps:
+        - download: current
+          artifact: warFiles
+          patterns: '**/*.war'
+        - script: |
+              ls '$(Pipeline.Workspace)'

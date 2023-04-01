@@ -42,7 +42,7 @@ stages:
       # - publish: '$(Pipeline.Workspace)/target'
       #   artifact: warFiles
       - script: |
-              ls 
+              ls '$(Build.ArtifactStagingDirectory)'
               pwd
   - stage: Uploadartifact
     displayName: 'Upload to azure artifacts'

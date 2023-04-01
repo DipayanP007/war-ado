@@ -57,26 +57,31 @@ stages:
       steps:
       - publish: '$(Build.ArtifactStagingDirectory)'
         artifact: warFiles
-      - task: PublishPipelineArtifact@1
-        inputs:
-          targetPath: '$(Build.ArtifactStagingDirectory)'
-          artifact: 'wars'
-          publishLocation: 'pipeline'
+      # - task: PublishPipelineArtifact@1
+      #   inputs:
+      #     targetPath: '$(Build.ArtifactStagingDirectory)'
+      #     artifact: 'wars'
+      #     publishLocation: 'pipeline'
+      # - task: PublishBuildArtifacts@1
+      #   inputs:
+      #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      #     ArtifactName: 'drop'
+      #     publishLocation: 'Container'
   - stage: Uploadartifact
     dependsOn: createArtifact
     displayName: 'Upload to azure artifacts'
     jobs:
     - job: Downloadartifact
       steps:
-        # - download: current
-        #   artifact: warFiles
-        #   patterns: '**/*.war'
-        - task: DownloadPipelineArtifact@2
-          inputs:
-            buildType: 'current'
-            artifactName: 'wars'
-            itemPattern: '**'
-            targetPath: '$(Pipeline.Workspace)'
+        - download: current
+          artifact: warFiles
+          patterns: '**/*.war'
+        # - task: DownloadPipelineArtifact@2
+        #   inputs:
+        #     buildType: 'current'
+        #     artifactName: 'wars'
+        #     itemPattern: '**'
+        #     targetPath: '$(Pipeline.Workspace)'
         - script: |
               set -x
               find '$(Pipeline.Workspace)'

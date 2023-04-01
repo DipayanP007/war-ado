@@ -68,19 +68,19 @@ stages:
     jobs:
     - job: Downloadartifact
       steps:
-        - download: current
-          artifact: warFiles
-          patterns: '**/*.war'
+        # - download: current
+        #   artifact: warFiles
+        #   patterns: '**/*.war'
         - task: DownloadPipelineArtifact@2
           inputs:
             buildType: 'current'
             artifactName: 'wars'
-            itemPattern: '**/*.war'
+            itemPattern: '**'
             targetPath: '$(Pipeline.Workspace)'
         - script: |
               set -x
               find '$(Pipeline.Workspace)'
-              find . | grep -i war
+              find .
               
         - task: PublishBuildArtifacts@1
           inputs:

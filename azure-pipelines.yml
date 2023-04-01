@@ -67,9 +67,9 @@ stages:
           patterns: '**/*.war'
         - script: |
               set -x
-              ls '$(Pipeline.Workspace)'
+              find '$(Pipeline.Workspace)'
               ls
-              find .
+              
         - task: PublishBuildArtifacts@1
           inputs:
             PathtoPublish: '$(Pipeline.Workspace)/warFiles'

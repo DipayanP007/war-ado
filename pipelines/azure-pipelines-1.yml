@@ -1,0 +1,29 @@
+trigger: none
+
+resources:
+  pipelines:
+  - pipeline: archive-war-pipeline   # Name of the pipeline resource
+    source: archive-war # Name of the pipeline referenced by the pipeline resource
+    project: DipayanPramanik # Required only if the source pipeline is in another project
+    trigger: true # enable the trigger
+
+stages:
+- stage: DownloadArtifact
+  displayName: "Download the artifact"
+  jobs:
+  - job: downloadWar
+    steps:
+    - task: DownloadBuildArtifacts@1
+      inputs:
+        buildType: 'specific'
+        project: '1747631c-7e61-4789-9bfd-ba71831b59ca'
+        pipeline: '2'
+        buildVersionToDownload: 'latest'
+        downloadType: 'single'
+        artifactName: 'finalbuildwars'
+        downloadPath: '$(System.ArtifactsDirectory)'
+        cleanDestinationFolder: true
+    - script: |
+          find .
+          find '$(System.ArtifactsDirectory)'
+          ls '$(System.ArtifactsDirectory)/'

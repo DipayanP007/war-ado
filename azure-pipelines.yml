@@ -70,3 +70,8 @@ stages:
               ls '$(Pipeline.Workspace)'
               ls
               find .
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Pipeline.Workspace)/warFiles'
+            ArtifactName: 'wars'
+            publishLocation: 'Container'

@@ -55,7 +55,7 @@ stages:
       displayName: 'Archive package to be used by next stage'
       dependsOn: mavenpackage
       steps:
-      - publish: '$(Build.ArtifactStagingDirectory)/target'
+      - publish: '$(Build.ArtifactStagingDirectory)'
         artifact: warFiles
   - stage: Uploadartifact
     displayName: 'Upload to azure artifacts'

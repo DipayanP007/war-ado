@@ -68,7 +68,7 @@ stages:
         - script: |
               set -x
               find '$(Pipeline.Workspace)'
-              ls
+              find . | grep -i war
               
         - task: PublishBuildArtifacts@1
           inputs:

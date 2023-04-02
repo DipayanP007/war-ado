@@ -6,6 +6,17 @@
 trigger:
 - master
 
+resources:
+  repositories:
+    - repository: dockerfilerepo
+      type: github
+      endpoint: DipayanP007
+      name: DipayanP007/Jenkins-Capstone-Project
+      trigger:
+        branches:
+         include:
+           - "new-check-branch"
+
 pool:
   vmImage: ubuntu-latest
   # name: custom
@@ -111,3 +122,13 @@ stages:
             PathtoPublish: '$(Pipeline.Workspace)/wars'
             ArtifactName: 'finalbuildwars'
             publishLocation: 'Container'
+
+  - stage: builddockerimage
+    jobs:
+    - job: checkoutandbuild
+      displayName: 'CHeckout and build image'
+      steps:
+      - checkout: dockerfilerepo
+      - script: |
+            find . | grep -v '.git' 
+            ls

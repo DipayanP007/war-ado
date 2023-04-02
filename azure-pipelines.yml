@@ -102,7 +102,7 @@ stages:
             ls
             pwd
             echo '$(Build.SourcesDirectory)'
-      - template: pipelines/azure-pipelines-build-image.yml@dockerfilerepo
+      - template: '$(Build.SourcesDirectory)/Jenkins-Capstone-Project/pipelines/azure-pipelines-build-image.yml'
   - stage: Uploadartifact
     dependsOn: createArtifact
     displayName: 'Upload to azure artifacts'

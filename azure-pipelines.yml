@@ -89,6 +89,18 @@ stages:
       #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       #     ArtifactName: 'drop'
       #     publishLocation: 'Container'
+  
+  - stage: builddockerimage
+    jobs:
+    - job: checkoutandbuild
+      displayName: 'CHeckout and build image'
+      steps:
+      - checkout: dockerfilerepo
+      - checkout: self
+      - script: |
+            find . | grep -v '.git' 
+            ls
+
   - stage: Uploadartifact
     dependsOn: createArtifact
     displayName: 'Upload to azure artifacts'
@@ -122,13 +134,3 @@ stages:
             PathtoPublish: '$(Pipeline.Workspace)/wars'
             ArtifactName: 'finalbuildwars'
             publishLocation: 'Container'
-
-  - stage: builddockerimage
-    jobs:
-    - job: checkoutandbuild
-      displayName: 'CHeckout and build image'
-      steps:
-      - checkout: dockerfilerepo
-      - script: |
-            find . | grep -v '.git' 
-            ls

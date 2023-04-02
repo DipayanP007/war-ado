@@ -6,6 +6,15 @@ resources:
     source: archive-war # Name of the pipeline referenced by the pipeline resource
     project: DipayanPramanik # Required only if the source pipeline is in another project
     trigger: true # enable the trigger
+  repositories:
+    - repository: dockerfilerepo
+      type: github
+      endpoint: DipayanP007
+      name: DipayanP007/Jenkins-Capstone-Project
+      trigger:
+        branches:
+         include:
+           - "new-check-branch"
 
 stages:
 - stage: DownloadArtifact
@@ -28,3 +37,8 @@ stages:
           find '$(System.ArtifactsDirectory)'
           ls '$(System.ArtifactsDirectory)/'
     - template: /pipelines/azure-template.yml
+    - checkout: dockerfilerepo
+    - script: |
+          find .
+          ls
+

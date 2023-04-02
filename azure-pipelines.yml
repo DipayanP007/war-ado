@@ -102,6 +102,10 @@ stages:
             ls
             pwd
             echo '$(Build.SourcesDirectory)'
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'mydockerhub'
+          command: 'login'
       - template: pipelines/azure-pipelines-build-image.yml@dockerfilerepo
   - stage: Uploadartifact
     dependsOn: createArtifact

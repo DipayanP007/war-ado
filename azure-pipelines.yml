@@ -110,7 +110,7 @@ stages:
         inputs:
           containerRegistry: 'mydockerhub'
           command: 'login'
-      - ${{ if eq(variables.ENVIRON, 'qa') }}:
+      - ${{ if eq(Build.SourceBranchName, 'qa') }}:
         - template: pipelines/azure-pipelines-build-image.yml@dockerfilerepo
           parameters:
             CONTAINERREGISTRY: 'mydockerhub'
@@ -120,6 +120,16 @@ stages:
             TAGS: |
                   qa-$(Build.BuildId)
                   latest-qa
+      - ${{ if eq(Build.SourceBranchName, 'master') }}:
+        - template: pipelines/azure-pipelines-build-image.yml@dockerfilerepo
+          parameters:
+            CONTAINERREGISTRY: 'mydockerhub'
+            REPOSITORY: 'dipayanp007/tomcatwar-prod'
+            DOCKERFILEPATH: '$(Build.SourcesDirectory)/Jenkins-Capstone-Project/docker/Dockerfile'
+            BUILDCONTEXT: '$(Build.SourcesDirectory)/war-ado'
+            TAGS: |
+                  prod-$(Build.BuildId)
+                  latest-prod
   - stage: Uploadartifact
     dependsOn: createArtifact
     displayName: 'Upload to azure artifacts'

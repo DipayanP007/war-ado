@@ -21,6 +21,9 @@ pool:
   vmImage: ubuntu-latest
   # name: custom
 
+variables: 
+  ENVIRON: 'qa'
+
 # steps:
 # - script: echo Hello, world!
 #   displayName: 'Run a one-line script'
@@ -106,7 +109,16 @@ stages:
         inputs:
           containerRegistry: 'mydockerhub'
           command: 'login'
-      - template: pipelines/azure-pipelines-build-image.yml@dockerfilerepo
+      - ${{ if eq(variables.ENVIRON, 'qa') }}:
+        - template: pipelines/azure-pipelines-build-image.yml@dockerfilerepo
+          parameters:
+            CONTAINERREGISTRY: 'mydockerhub'
+            REPOSITORY: 'dipayanp007/tomcatwar-qa'
+            DOCKERFILEPATH: '$(Build.SourcesDirectory)/Jenkins-Capstone-Project/docker/Dockerfile'
+            BUILDCONTEXT: '$(Build.SourcesDirectory)/war-ado'
+            TAGS: |
+                  qa-$(Build.BuildId)
+                  latest-qa
   - stage: Uploadartifact
     dependsOn: createArtifact
     displayName: 'Upload to azure artifacts'

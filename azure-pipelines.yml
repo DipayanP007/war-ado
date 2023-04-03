@@ -113,7 +113,7 @@ stages:
         inputs:
           containerRegistry: 'mydockerhub'
           command: 'login'
-      - ${{ if eq(Build.SourceBranchName, 'qa') }}:
+      - ${{ if eq(variables.Build.SourceBranchName, 'qa') }}:
         - template: pipelines/azure-pipelines-build-image.yml@dockerfilerepo
           parameters:
             CONTAINERREGISTRY: 'mydockerhub'
@@ -123,7 +123,7 @@ stages:
             TAGS: |
                   qa-$(Build.BuildId)
                   latest-qa
-      - ${{ if eq(Build.SourceBranchName, 'master') }}:
+      - ${{ if eq(variables.Build.SourceBranchName, 'master') }}:
         - template: pipelines/azure-pipelines-build-image.yml@dockerfilerepo
           parameters:
             CONTAINERREGISTRY: 'mydockerhub'

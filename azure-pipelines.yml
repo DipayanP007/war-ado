@@ -105,6 +105,7 @@ stages:
             ls
             pwd
             echo '$(Build.SourcesDirectory)'
+            echo '$(Build.SourceBranchName)'
       - task: Docker@2
         inputs:
           containerRegistry: 'mydockerhub'
